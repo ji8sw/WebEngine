@@ -20,12 +20,15 @@ canvas#GameCanvas {
     background: #23272e;
     border: 2px solid #2c313c;
     box-shadow: 0 2px 16px #000a;
+    width: 100%;
+    max-width: 800px;
+    height: auto;
 }
 
 #EditorArea {
     display: block;
-    width: 90%;
-    max-width: 800px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto 16px auto;
     background: #23272e;
     color: #e0e0e0;
@@ -47,7 +50,7 @@ canvas#GameCanvas {
 
 .Button {
     display: block;
-    margin: 16px 16px 16px 16px;
+    margin: 8px 0;
     background: #4f8cff;
     color: #fff;
     font-size: 1.1em;
@@ -58,6 +61,8 @@ canvas#GameCanvas {
     cursor: pointer;
     box-shadow: 0 2px 8px #0006;
     transition: background 0.2s;
+    width: 100%;
+    min-width: 80px;
 }
 
 .Button:hover, .Button:focus {
@@ -93,4 +98,29 @@ footer {
     display: flex;
     align-items: flex-end;
     width: 120px;
+}
+
+@media (max-width: 600px) {
+    #EditorArea {
+        font-size: 0.9em;
+        padding: 4px;
+    }
+    #LeftSideTooling {
+        width: 80px;
+        padding: 4px;
+    }
+}
+
+@media (max-width: 800px) {
+    #MainPanel {
+        flex-direction: column;
+        align-items: center;
+    }
+    #LeftSideTooling {
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 8px;
+    }
 }
