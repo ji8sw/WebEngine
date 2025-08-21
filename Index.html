@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebEngine</title>
+
+    <!-- CodeMirror CSS & JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+</head>
+<body>
+    <link rel="stylesheet" href="Styles.css">
+
+    <div id="MainPanel">
+        <div id="LeftSideTooling">
+            <button id="RunButton" class="Button">Run</button>
+            <button id="StopButton" class="Button">Stop</button>
+        </div>
+        <canvas id="GameCanvas" width="800" height="600"></canvas>
+    </div>
+
+    <textarea id="EditorArea">Game.Print("Welcome to WebEngine!");</textarea>
+    <script>
+        var Editor = CodeMirror.fromTextArea(document.getElementById('EditorArea'), 
+        {
+          lineNumbers: true,
+          mode: "javascript",
+          theme: "dracula"
+        });
+
+        var SavedCode = localStorage.getItem('EditorCode');
+        if (SavedCode !== null) Editor.setValue(SavedCode);
+
+        Editor.on('change', function() 
+        {
+            localStorage.setItem('EditorCode', Editor.getValue());
+        });
+    </script>
+
+    <footer>
+        <p>&copy; 2025 WebEngine</p>
+    </footer>
+
+    <script src="Engine.js"></script>
+</body>
+</html>
