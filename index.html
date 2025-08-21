@@ -19,27 +19,22 @@
             <button id="RunButton" class="Button">Run</button>
             <button id="StopButton" class="Button">Stop</button>
             <button id="CopyCanvas" class="Button">Copy Canvas</button>
+            <button id="SaveGameCode" class="Button" title="Saves all current editors as seperate scripts locally">Save Game Code</button>
+            <input type="file" id="LoadGameCode" class="Button" title="Will close all current tabs" multiple accept=".js">
         </div>
         <canvas id="GameCanvas" width="800" height="600"></canvas>
     </div>
 
-    <textarea id="EditorArea">Game.Print("Welcome to WebEngine!");</textarea>
-    <script>
-        var Editor = CodeMirror.fromTextArea(document.getElementById('EditorArea'), 
-        {
-          lineNumbers: true,
-          mode: "javascript",
-          theme: "dracula"
-        });
+    <div id="TabBar">
+        <button class="TabButton Active" data-target="Script_1">Script_1</button>
+        <button class="AddTabButton" id="AddTabButton">+</button>
+    </div>
 
-        var SavedCode = localStorage.getItem('EditorCode');
-        if (SavedCode !== null) Editor.setValue(SavedCode);
-
-        Editor.on('change', function() 
-        {
-            localStorage.setItem('EditorCode', Editor.getValue());
-        });
-    </script>
+    <div id="Editors">
+        <div id="Script_1" class="EditorContainer Active">
+          <textarea>Game.Print("Welcome to Script 1!");</textarea>
+        </div>
+    </div>
 
     <footer>
         <p>&copy; 2025 WebEngine</p>

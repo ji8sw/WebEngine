@@ -44,9 +44,10 @@ WebEngine is a browser-based JavaScript game engine and code playground. It feat
 - `Game.Print(text)` — prints to the browser console
 - `Game.SetCanvasSize(Width, Height)` — Sets the canvas size, not recommended unless you need it, resets on reload
 - `Math.clamp(value, min, max)` — clamps a value between min and max
+- `Game.Require(EditorName)` — Calls the code for that script, which helps with organization, note that variables & functions defined in required scripts are not global, and therefore should be added to the Game object, EditorName should be the title of the tab, such as "Script_2" or "Script_3"
 
 ### Notes
-- `Colour` - Colour in draw functions can be either a colour name, like "red", or a gradient recieved from ...
+- `Colour` - Colour in draw functions can be either a colour name, like "red", or a gradient recieved from gradient creation functions
 
 ## Example
 ```javascript
@@ -59,6 +60,11 @@ let PlayerMoveSpeed = 50
 let CursorRotation = 0
 
 let Photo = Game.LoadImage("https://media.discordapp.net/attachments/1325358285678837853/1394544520837861416/IMG_7311.jpg?ex=68a7f9cb&is=68a6a84b&hm=5caf54871122602e69be9916d6a79fd750953c4a331d61e48e63332ff73c0bf0&=&format=webp&width=625&height=937") // loads the image from the url, will only actually be drawn when its downloaded
+let TitleGradient = Game.CreateLinearGradient(0, 70, 70, 0,
+[
+    { offset: 0, color: "white" },
+    { offset: 1, color: "green" }
+]);
 
 Game.Update = function()
 {
@@ -80,11 +86,11 @@ Game.Update = function()
 
 	Game.Clear();
   
-    Game.DrawImage(Photo, Game.Width / 2, Game.Height / 2, 400, 400);
+    Game.DrawImage(Photo, Game.Width - 100, Game.Height - 100, 200, 200);
   
   	Game.DrawRect(Game.Mouse.X, Game.Mouse.Y, 10, 10, "white", CursorRotation); // follows the mouse cursor, no colour specified so it defaults to Game.DrawColour
-	Game.DrawCircle(PlayerX, PlayerY, 10, "red"); // draws a red circle, 10px radius at the player position
-  	Game.DrawText("WebEngine Example", Game.Width / 2, 24); // pretty explanatory, draws text at the center top of the screen, default font size is 16 so we go down 16 and a bit
+	Game.DrawCircle(PlayerX, PlayerY, 10, "white"); // draws a red circle, 10px radius at the player position
+  	Game.DrawText("WebEngine Example", Game.Width / 2, 24, TitleGradient); // pretty explanatory, draws text at the center top of the screen, default font size is 16 so we go down 16 and a bit
   
   	Game.DrawText("Copyright 2077", Game.Width / 2, Game.Height - 54, "purple", CursorRotation);
 }

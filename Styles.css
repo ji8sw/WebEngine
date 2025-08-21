@@ -98,6 +98,87 @@ footer {
     width: 120px;
 }
 
+#TabBar 
+{
+    display: flex;
+    background: #222;
+    border-bottom: 1px solid #444;
+}
+
+.TabButton 
+{
+    display: inline-block;
+    background: #23272e;
+    color: #e0e0e0;
+    font-family: inherit;
+    font-size: 1.05em;
+    border: 1.5px solid #2c313c;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    padding: 8px 24px;
+    margin-right: 4px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #0003;
+    transition: background 0.2s, color 0.2s;
+    outline: none;
+}
+
+.TabButton:hover, .TabButton:focus 
+{
+    background: #20232a;
+    color: #4f8cff;
+}
+
+.TabButton.Active 
+{
+    background: #181a20;
+    color: #4f8cff;
+    border-bottom: 2px solid #181a20;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.TabButton.Active 
+{
+  background: #444;
+  color: white;
+}
+
+.EditorContainer
+{
+  display: none;
+  height: 300px;
+}
+
+.EditorContainer.Active
+{
+  display: block;
+}
+
+.AddTabButton 
+{
+    display: inline-block;
+    background: #444;
+    color: white;
+    font-family: inherit;
+    font-size: 1.05em;
+    border: 1.5px solid #2c313c;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    padding: 8px 24px;
+    margin-right: 4px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #0003;
+    transition: background 0.2s, color 0.2s;
+    outline: none;
+}
+
+.AddTabButton:hover, .AddTabButton:focus 
+{
+    background: #20232a;
+    color: #4f8cff;
+}
+
 @media (max-width: 600px) {
     #EditorArea {
         font-size: 0.9em;
