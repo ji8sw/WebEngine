@@ -23,6 +23,7 @@ canvas#GameCanvas {
     width: 100%;
     max-width: 800px;
     height: auto;
+    flex: 1;
 }
 
 #EditorArea {
@@ -89,6 +90,7 @@ footer {
 {
     display: flex;
     flex-direction: row;
+    align-items: flex-end;
 }
 
 #LeftSideTooling 
@@ -96,6 +98,7 @@ footer {
     display: flex;
     align-items: flex-end;
     width: 120px;
+    z-index: 2;
 }
 
 #TabBar 
@@ -179,27 +182,46 @@ footer {
     color: #4f8cff;
 }
 
-@media (max-width: 600px) {
-    #EditorArea {
+input[type="file"] 
+{
+    display: none;
+}
+
+@media (max-width: 600px) 
+{
+    #EditorArea 
+    {
         font-size: 0.9em;
         padding: 4px;
     }
-    #LeftSideTooling {
+    #LeftSideTooling 
+    {
         width: 80px;
         padding: 4px;
     }
 }
 
-@media (max-width: 800px) {
-    #MainPanel {
+@media (max-width: 800px) 
+{
+    #MainPanel 
+    {
         flex-direction: column;
         align-items: center;
     }
-    #LeftSideTooling {
-        flex-direction: row;
+    #LeftSideTooling 
+    {
+        flex-direction: column;
         width: 100%;
         justify-content: center;
         align-items: center;
         margin-bottom: 8px;
+    }
+}
+
+@media (max-width: 2040px) 
+{
+    #LeftSideTooling 
+    {
+        flex-direction: column;
     }
 }

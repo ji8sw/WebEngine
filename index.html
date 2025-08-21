@@ -20,7 +20,8 @@
             <button id="StopButton" class="Button">Stop</button>
             <button id="CopyCanvas" class="Button">Copy Canvas</button>
             <button id="SaveGameCode" class="Button" title="Saves all current editors as seperate scripts locally">Save Game Code</button>
-            <input type="file" id="LoadGameCode" class="Button" title="Will close all current tabs" multiple accept=".js">
+            <label for="LoadGameCode" class="Button">Load Game Code</label>
+<input type="file" id="LoadGameCode" multiple accept=".js" style="display:none;">    
         </div>
         <canvas id="GameCanvas" width="800" height="600"></canvas>
     </div>
