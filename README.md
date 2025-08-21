@@ -20,13 +20,16 @@ WebEngine is a browser-based JavaScript game engine and code playground. It feat
 ## API Reference
 
 ### Drawing
+- `Game.DrawColour` (the default draw colour if none was provided in the following functions)
 - `Game.DrawRect(X, Y, Width, Height, Colour = Game.DrawColour, Rotation = 0)`
 - `Game.DrawCircle(X, Y, Radius, Colour = Game.DrawColour, Rotation = 0)`
 - `Game.DrawText(Text, X, Y, Colour = Game.DrawColour, Rotation = 0)`
 - `Game.DrawImage(Image, X, Y, Width = Image.naturalWidth, Height = Image.naturalHeight, Rotation = 0)`
-- `Game.Clear()`
+- `Game.Clear(ClearColour = Transparent)` (clears the canvas, with an optional background colour, or transparent)
 - `Game.Width`, `Game.Height` (canvas size)
 - `Image Game.LoadImage(URL)` (ensure your image's host allows cross origin requests)
+- `Gradient Game.CreateLinearGradient(x0, y0, x1, y1, ColourStops)`
+- `Gradient Game.CreateRadialGradient(x0, y0, r0, x1, y1, r1, ColourStops)` (to understand more about the gradient functions, [read here](https://www.w3schools.com/jsref/canvas_createlineargradient.asp))
 
 ### Input
 - `Game.IsKeyDown(Key)` — returns `true` if the key is pressed (case-insensitive) (for example: "w" or "F")
@@ -39,7 +42,11 @@ WebEngine is a browser-based JavaScript game engine and code playground. It feat
 
 ### Utility
 - `Game.Print(text)` — prints to the browser console
+- `Game.SetCanvasSize(Width, Height)` — Sets the canvas size, not recommended unless you need it, resets on reload
 - `Math.clamp(value, min, max)` — clamps a value between min and max
+
+### Notes
+- `Colour` - Colour in draw functions can be either a colour name, like "red", or a gradient recieved from ...
 
 ## Example
 ```javascript

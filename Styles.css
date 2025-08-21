@@ -50,7 +50,7 @@ canvas#GameCanvas {
 
 .Button {
     display: block;
-    margin: 8px 0;
+    margin: 16px 16px 16px 16px;
     background: #4f8cff;
     color: #fff;
     font-size: 1.1em;
@@ -61,8 +61,6 @@ canvas#GameCanvas {
     cursor: pointer;
     box-shadow: 0 2px 8px #0006;
     transition: background 0.2s;
-    width: 100%;
-    min-width: 80px;
 }
 
 .Button:hover, .Button:focus {

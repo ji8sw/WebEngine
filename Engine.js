@@ -16,7 +16,17 @@ GameAPI.Mouse = { X: 0, Y: 0, Down: false };
 
 GameAPI.Print = function(Text) { console.log(Text); };
 
-GameAPI.Clear = function() { CTX.clearRect(0, 0, Canvas.width, Canvas.height); };
+GameAPI.Clear = function(ClearColour = undefined) 
+{
+    if (typeof ClearColour === "undefined") ClearColour = CTX.clearRect(0, 0, Canvas.width, Canvas.height);
+    else
+    {
+        CTX.save();
+        CTX.fillStyle = ClearColour;
+        CTX.fillRect(0, 0, Canvas.width, Canvas.height);
+        CTX.restore();
+    }
+}
 GameAPI.DrawColour = "white";
 
 let FrameHandle = null;
@@ -42,7 +52,7 @@ GameAPI.DrawRect = function(X, Y, Width, Height, Colour, Rotation = 0)
 
 GameAPI.DrawCircle = function(X, Y, Radius, Colour, Rotation = 0) 
 {
-    if (typeof Colour === "undefined") Colour = GameAPI.DrawColour;
+    if (typeof Colour == undefined) Colour = GameAPI.DrawColour;
 
     CTX.save(); // Save the current context state
     CTX.translate(X, Y);
@@ -88,12 +98,34 @@ GameAPI.DrawImage = function(Image, X, Y, Width, Height, Rotation = 0)
     CTX.restore(); // Restore the context to its previous state
 }
 
+GameAPI.SetCanvasSize = function(Width, Height)
+{
+    Canvas.width = Width;
+    Canvas.height = Height;
+    GameAPI.Width = Width;
+    GameAPI.Height = Height;
+}
+
 GameAPI.LoadImage = function(URL)
 {
     let NewImage = new Image();
     NewImage.crossOrigin = "Anonymous"; // Allow cross-origin images
     NewImage.src = URL;
     return NewImage;
+}
+
+GameAPI.CreateLinearGradient = function(x0, y0, x1, y1, ColourStops) 
+{
+    let Gradient = CTX.createLinearGradient(x0, y0, x1, y1);
+    ColourStops.forEach(Stop => Gradient.addColorStop(Stop.offset, Stop.color));
+    return Gradient;
+}
+
+GameAPI.CreateRadialGradient = function(x0, y0, r0, x1, y1, r1, ColourStops) 
+{
+    let Gradient = CTX.createRadialGradient(x0, y0, r0, x1, y1, r1);
+    ColourStops.forEach(Stop => Gradient.addColorStop(Stop.offset, Stop.color));
+    return Gradient;
 }
 
 async function LoadGameCode(Code)
@@ -103,6 +135,8 @@ async function LoadGameCode(Code)
         cancelAnimationFrame(FrameHandle);
         FrameHandle = null;
     }
+
+    GameAPI.SetCanvasSize(800, 600); // Reset canvas size
     
     GameAPI.Running = true;
     new Function("Game", Code)(GameAPI);
@@ -142,6 +176,24 @@ document.addEventListener("DOMContentLoaded", () =>
     document.getElementById("StopButton").addEventListener("click", () => 
     {
         GameAPI.Running = false;
+    });
+
+    document.getElementById("CopyCanvas").addEventListener("click", () => 
+    {
+        Canvas.toBlob(async Blob =>
+        {
+            if (!Blob) return;
+            try
+            {
+                await navigator.clipboard.write([
+                    new ClipboardItem({ "image/png": Blob })
+                ]);
+            }
+            catch (Error)
+            {
+                console.error("Failed to copy canvas image:", Error);
+            }
+        });
     });
 });
 
