@@ -10,6 +10,7 @@ Game.Height = Canvas.height;
 Game.Width = Canvas.width;
 Game.DeltaTime = 0;
 Game.Font = "16px Arial";
+Game.AudioSources = [];
 
 Game.KeysDown = {};
 Game.Mouse = { X: 0, Y: 0, Down: false };
@@ -114,6 +115,44 @@ Game.LoadImage = function(URL)
     return NewImage;
 }
 
+Game.AsyncLoadImage = function(URL)
+{
+    return new Promise((Res, Rej) => 
+    {
+        let NewImage = new Image()
+        NewImage.crossOrigin = "Anonymous"
+        NewImage.onload = () => Res(NewImage)
+        NewImage.onerror = () => Rej(new Error("Failed to load image: " + URL))
+        NewImage.src = URL
+    })
+}
+
+Game.AsyncLoadAudio = async function(URL, Play = true)
+{
+    let Context = new AudioContext();
+    return fetch(URL).then(Response => Response.arrayBuffer())
+        .then(ArrayBuffer => Context.decodeAudioData(ArrayBuffer))
+        .then(AudioBuffer => 
+        {
+            let Source = Context.createBufferSource();
+            Source.buffer = AudioBuffer;
+            Source.connect(Context.destination);
+            if (Play) Source.start();
+            Game.AudioSources.push(Source);
+            return Source;
+        });
+}
+
+Game.StopAllAudio = function()
+{
+    Game.AudioSources.forEach(Source => 
+    {
+        Source.stop();
+        Source.disconnect();
+    });
+    Game.AudioSources = [];
+}
+
 Game.CreateLinearGradient = function(x0, y0, x1, y1, ColourStops) 
 {
     let Gradient = CTX.createLinearGradient(x0, y0, x1, y1);
@@ -138,7 +177,14 @@ Game.Require = function(ScriptID)
 
     let Code = Editors[ScriptID].getValue();
     if (!Code) console.error(`Script ${ScriptID} is empty or not found.`);
-    eval(Code);
+    try
+    {
+        eval(`(async () => {${Code}});`);
+    } 
+    catch (Error)
+    {
+        console.error(`Error running script ${ScriptID}:`, Error);
+    }
 }
 
 async function LoadGameCode(Code)
@@ -152,7 +198,14 @@ async function LoadGameCode(Code)
     Game.SetCanvasSize(800, 600); // Reset canvas size
     
     Game.Running = true;
-    eval(Code);
+    try
+    {
+        eval(`(async () => {${Code}})();`);
+    } 
+    catch (Error)
+    {
+        console.error(`Error running script:`, Error);
+    }
     let LastTime = performance.now();
 
     function Loop()
@@ -192,6 +245,7 @@ document.addEventListener("DOMContentLoaded", () =>
 
     document.getElementById("StopButton").addEventListener("click", () => 
     {
+        Game.StopAllAudio();
         Game.Running = false;
     });
 
@@ -266,17 +320,7 @@ document.addEventListener("DOMContentLoaded", () =>
             NewContainer.appendChild(TA);
             document.getElementById('Editors').appendChild(NewContainer);
 
-            var CM = CodeMirror.fromTextArea(TA, 
-            {
-                lineNumbers: true,
-                mode: "javascript",
-                theme: "dracula",
-                tabSize: 4,
-                indentUnit: 4,
-                matchBrackets: true,
-                autoCloseBrackets: true,
-                lineWrapping: true
-            });
+            var CM = CreateEditorFromTextArea(TA);
         
             CM.setValue(Text);
             Editors[NewID] = CM;
@@ -364,14 +408,32 @@ Math.clamp = function(Value, Min, Max)
     return Math.max(Min, Math.min(Max, Value));
 }
 
+Math.randomInt = function(max)
+{
+    return Math.floor(Math.random() * max);
+}
+
 // Editor UI
 var Editors = {}
 var CurrentEditor = null
 
-document.querySelectorAll('.EditorContainer textarea').forEach((TA, Index) => 
+function CustomHint(CM) 
+{
+    let Inner = CodeMirror.hint.javascript(CM) || { list: [] }
+    let Anyword = CodeMirror.hint.anyword(CM) || { list: [] }
+    
+    return {
+        list: [...new Set([...Inner.list, ...Anyword.list])],
+        from: Inner.from || Anyword.from,
+        to: Inner.to || Anyword.to
+    }
+}
+
+function CreateEditorFromTextArea(TA)
 {
     var CM = CodeMirror.fromTextArea(TA, 
     {
+        addons: ["closebrackets"],
         lineNumbers: true,
         mode: "javascript",
         theme: "dracula",
@@ -379,8 +441,37 @@ document.querySelectorAll('.EditorContainer textarea').forEach((TA, Index) =>
         indentUnit: 4,
         matchBrackets: true,
         autoCloseBrackets: true,
-        lineWrapping: true
+        lineWrapping: true,
+        smartIndent: true,
+        indentWithTabs: true,
+        matchBrackets: true,
+        showTrailingSpace: true,
+        extraKeys:
+        {
+            "Ctrl-Space": "autocomplete",
+        },
+        hintOptions: { hint: CustomHint }
     });
+
+    CM.on("inputRead", function(Instance, Change) 
+    {
+        if (Change.text[0].match(/\w/)) 
+        {
+            let Cursor = Instance.getCursor()
+            let Token = Instance.getTokenAt(Cursor)
+            if (Token.string.length >= 2) 
+            {
+                Instance.showHint({ completeSingle: false })
+            }
+        }
+    })
+
+    return CM;
+}
+
+document.querySelectorAll('.EditorContainer textarea').forEach((TA, Index) => 
+{
+    var CM = CreateEditorFromTextArea(TA);
 
     var Key = TA.parentElement.id;
     Editors[Key] = CM;
@@ -435,18 +526,7 @@ document.getElementById('AddTabButton').addEventListener('click', function()
     NewContainer.appendChild(TA);
     document.getElementById('Editors').appendChild(NewContainer);
 
-    var CM = CodeMirror.fromTextArea(TA, 
-    {
-        lineNumbers: true,
-        mode: "javascript",
-        theme: "dracula",
-        tabSize: 4,
-        indentUnit: 4,
-        matchBrackets: true,
-        autoCloseBrackets: true,
-        lineWrapping: true
-    });
-
+    var CM = CreateEditorFromTextArea(TA);
     Editors[NewID] = CM;
 
     var Saved = localStorage.getItem('Code_' + NewID);

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebEngine - API</title>
+    <link rel="icon" href="code-solid-full.png" type="image/x-icon">
+
+    <!-- CodeMirror CSS & JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+</head>
+<body>
+    <link rel="stylesheet" href="Styles.css">
+    <button id="BackButton" class="Button" onclick="window.location.href='Index.html'">Back</button>
+
+    <div id="API" class="EditorContainer Active">
+          <textarea>
+//
+// Drawing
+//
+string Game.DrawColour // the default draw colour if none was provided in the following functions
+void Game.DrawRect(int X, int Y, int Width, int Height, string Colour = Game.DrawColour, int Rotation = 0)
+void Game.DrawCircle(int X, int Y, int Radius, string Colour = Game.DrawColour, int Rotation = 0)
+void Game.DrawText(string Text, int X, int Y, int Colour = Game.DrawColour, int Rotation = 0)
+void Game.DrawImage(Image Image, int X, int Y, int Width = Image.naturalWidth, int Height = Image.naturalHeight, int Rotation = 0)
+void Game.Clear(string ClearColour = undefined) // clears the canvas, with an optional background colour, or transparent
+int Game.Width, Game.Height // canvas size
+Image Game.LoadImage(string URL) // ensure your image's host allows cross origin requests, this function is not blocking but it is also not a promise, the image will render when its loaded, and simply deny your render requests if its not loaded
+Image Game.AsyncLoadImage(string URL) // ensure your image's host allows cross origin requests, this function returns a Promise that you can await, which means you can render immediately after awaiting this
+Gradient Game.CreateLinearGradient(int x0, int y0, int x1, int y1, Array ColourStops)
+Gradient Game.CreateRadialGradient(int x0, int y0, int r0, int x1, int y1, int r1, Array ColourStops) // to understand more about the gradient functions, read here: https://www.w3schools.com/jsref/canvas_createlineargradient.asp
+
+//
+// Audio
+//
+AudioBufferSourceNode Game.AsyncLoadAudio(string URL, bool Play = true) // ensure your audio's host allows cross origin requests
+void Game.StopAllAudio() // stops all currently playing audio sources and removes them from Game.AudioSources
+
+//
+// Input
+//
+bool Game.IsKeyDown(string Key) // returns `true` if the key is pressed (case-insensitive) (for example: "w" or "F")
+int Game.Mouse.X, `Game.Mouse.Y` // mouse position on canvas
+bool Game.Mouse.Down // mouse button state
+
+//
+// Game Loop
+//
+abstract void Game.Update // If defined, this function is called every frame, abstract meaning you should define it in your code (not required)
+float Game.DeltaTime // for frame-rate independent movement.
+
+//
+// Utility
+//
+void Game.Print(text) // prints to the browser console
+void Game.SetCanvasSize(Width, Height) // Sets the canvas size, not recommended unless you need it, resets on reload
+int|float Math.clamp(value, min, max) // clamps a value between min and max
+Game.Require(EditorName) // Calls the code for that script, which helps with organization, note that variables & functions defined in required scripts are not global, and therefore should be added to the Game object, EditorName should be the title of the tab, such as "Script_2" or "Script_3"
+
+//
+// Notes
+//
+string|Gradient Colour // in draw functions can be either a colour name, like "red", or a gradient recieved from gradient creation functions
+AudioBufferSourceNode Source // in audio creation, AudioBufferSourceNode is an audio source which you can find more info on here: https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode</textarea>
+</div>
+</body>
+<script>
+    function CreateEditorFromTextArea(TA)
+    {
+        var CM = CodeMirror.fromTextArea(TA, 
+        {
+            addons: ["closebrackets"],
+            lineNumbers: true,
+            mode: "javascript",
+            theme: "dracula",
+            readOnly: true,
+        });
+
+        return CM;
+    }
+
+    var TA = document.getElementById("API").querySelector("textarea");
+    var Editor = CreateEditorFromTextArea(TA);
+</script>
+</html>

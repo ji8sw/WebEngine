@@ -18,36 +18,7 @@ WebEngine is a browser-based JavaScript game engine and code playground. It feat
 4. Use the provided API to interact with the canvas and input.
 
 ## API Reference
-
-### Drawing
-- `Game.DrawColour` (the default draw colour if none was provided in the following functions)
-- `Game.DrawRect(X, Y, Width, Height, Colour = Game.DrawColour, Rotation = 0)`
-- `Game.DrawCircle(X, Y, Radius, Colour = Game.DrawColour, Rotation = 0)`
-- `Game.DrawText(Text, X, Y, Colour = Game.DrawColour, Rotation = 0)`
-- `Game.DrawImage(Image, X, Y, Width = Image.naturalWidth, Height = Image.naturalHeight, Rotation = 0)`
-- `Game.Clear(ClearColour = Transparent)` (clears the canvas, with an optional background colour, or transparent)
-- `Game.Width`, `Game.Height` (canvas size)
-- `Image Game.LoadImage(URL)` (ensure your image's host allows cross origin requests)
-- `Gradient Game.CreateLinearGradient(x0, y0, x1, y1, ColourStops)`
-- `Gradient Game.CreateRadialGradient(x0, y0, r0, x1, y1, r1, ColourStops)` (to understand more about the gradient functions, [read here](https://www.w3schools.com/jsref/canvas_createlineargradient.asp))
-
-### Input
-- `Game.IsKeyDown(Key)` — returns `true` if the key is pressed (case-insensitive) (for example: "w" or "F")
-- `Game.Mouse.X`, `Game.Mouse.Y` — mouse position on canvas
-- `Game.Mouse.Down` — mouse button state
-
-### Game Loop
-- Define `Game.Update = function() { ... }` in your code. This function is called every frame.
-- Use `Game.DeltaTime` for frame-rate independent movement.
-
-### Utility
-- `Game.Print(text)` — prints to the browser console
-- `Game.SetCanvasSize(Width, Height)` — Sets the canvas size, not recommended unless you need it, resets on reload
-- `Math.clamp(value, min, max)` — clamps a value between min and max
-- `Game.Require(EditorName)` — Calls the code for that script, which helps with organization, note that variables & functions defined in required scripts are not global, and therefore should be added to the Game object, EditorName should be the title of the tab, such as "Script_2" or "Script_3"
-
-### Notes
-- `Colour` - Colour in draw functions can be either a colour name, like "red", or a gradient recieved from gradient creation functions
+[See Here](https://ji8sw.github.io/WebEngine/API.html)
 
 ## Example
 ```javascript
@@ -59,7 +30,7 @@ let PlayerY = Game.Height / 2
 let PlayerMoveSpeed = 50
 let CursorRotation = 0
 
-let Photo = Game.LoadImage("https://media.discordapp.net/attachments/1325358285678837853/1394544520837861416/IMG_7311.jpg?ex=68a7f9cb&is=68a6a84b&hm=5caf54871122602e69be9916d6a79fd750953c4a331d61e48e63332ff73c0bf0&=&format=webp&width=625&height=937") // loads the image from the url, will only actually be drawn when its downloaded
+let Photo = Game.LoadImage("https://ipfs.io/ipfs/QmZm1nZPpACjmf5MjUYAMXYsN9b6yAKzbvCv6WjDgJKLDp") // loads the image from the url, will only actually be drawn when its downloaded
 let TitleGradient = Game.CreateLinearGradient(0, 70, 70, 0,
 [
     { offset: 0, color: "white" },
