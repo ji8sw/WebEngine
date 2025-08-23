@@ -29,7 +29,7 @@ I highly recommend you read the engine code itself to understand the fully capab
 [See Here](https://ji8sw.github.io/WebEngine/API.html)
 
 ## Examples
-See a list of example scripts [here](https://ji8sw.github.io/WebEngine/Examples/Examples.md)
+See a list of example scripts [here](https://github.com/ji8sw/WebEngine/blob/main/Examples/Examples.md)
 
 ## Security Note
 User code runs in the browser and has access to browser APIs. For public deployments, consider sandboxing or restricting available APIs.

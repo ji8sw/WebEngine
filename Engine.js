@@ -464,6 +464,9 @@ function CreateEditorFromTextArea(TA)
         hintOptions: { hint: CustomHint }
     });
 
+    CM.setSize("100%", "100%");
+    CM.refresh();
+
     CM.on("inputRead", function(Instance, Change) 
     {
         if (Change.text[0].match(/\w/)) 

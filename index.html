@@ -33,9 +33,12 @@
             <button id="StopButton" class="Button">Stop</button>
             <button id="CopyCanvas" class="Button">Copy Canvas</button>
             <button id="SaveGameCode" class="Button" title="Saves all current editors as seperate scripts locally">Save Game Code</button>
-            <label for="LoadGameCode" class="Button">Load Game Code</label>
-            <button id="APIButton" class="Button" onclick="window.location.href='API.html'">API</button>
-<input type="file" id="LoadGameCode" multiple accept=".js" style="display:none;">    
+            <label for="LoadGameCode" class="Button">Load Game Code</label>  
+        </div>
+
+        <div id="TopLeftTooling">
+            <button class="Button" onclick="window.location.href='API.html'">API</button>
+            <button class="Button" onclick="window.location.href='https://github.com/ji8sw/WebEngine/blob/main/Examples/Examples.md'">Examples</button>
         </div>
         <canvas id="GameCanvas" width="800" height="600"></canvas>
     </div>
