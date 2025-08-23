@@ -179,7 +179,7 @@ Game.Require = function(ScriptID)
     if (!Code) console.error(`Script ${ScriptID} is empty or not found.`);
     try
     {
-        eval(`(async () => {${Code}});`);
+        (0, eval)(Code);
     } 
     catch (Error)
     {
@@ -196,6 +196,12 @@ async function LoadGameCode(Code)
     }
 
     Game.SetCanvasSize(800, 600); // Reset canvas size
+
+    // initialize matter physics
+    Game.PhysEngine = Matter.Engine.create()
+	Game.PhysWorld = Game.PhysEngine.world
+	Game.PhysRunner = Matter.Runner.create()
+	Matter.Runner.run(Game.PhysRunner, Game.PhysEngine)
     
     Game.Running = true;
     try
@@ -411,6 +417,11 @@ Math.clamp = function(Value, Min, Max)
 Math.randomInt = function(max)
 {
     return Math.floor(Math.random() * max);
+}
+
+Math.randomHexColour = function()
+{
+    return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0")}`;
 }
 
 // Editor UI

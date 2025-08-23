@@ -34,6 +34,12 @@ Gradient Game.CreateLinearGradient(int x0, int y0, int x1, int y1, Array ColourS
 Gradient Game.CreateRadialGradient(int x0, int y0, int r0, int x1, int y1, int r1, Array ColourStops) // to understand more about the gradient functions, read here: https://www.w3schools.com/jsref/canvas_createlineargradient.asp
 
 //
+// Physics
+// You can use Matter.js's API to interact with the following, read more here: https://brm.io/matter-js/docs/
+Matter.World Game.PhysWorld
+Matter.Engine Game.PhysEngine
+
+//
 // Audio
 //
 AudioBufferSourceNode Game.AsyncLoadAudio(string URL, bool Play = true) // ensure your audio's host allows cross origin requests
@@ -58,12 +64,14 @@ float Game.DeltaTime // for frame-rate independent movement.
 void Game.Print(text) // prints to the browser console
 void Game.SetCanvasSize(Width, Height) // Sets the canvas size, not recommended unless you need it, resets on reload
 int|float Math.clamp(value, min, max) // clamps a value between min and max
-Game.Require(EditorName) // Calls the code for that script, which helps with organization, note that variables & functions defined in required scripts are not global, and therefore should be added to the Game object, EditorName should be the title of the tab, such as "Script_2" or "Script_3"
+int Math.randomInt(max) // returns a random integer between 0 and max
+string Math.randomHexColour() // returns a random hex colour usable with Game.Draw functions
+Game.Require(EditorName) // Calls the code for that script, which helps with organization, EditorName should be the title of the tab, such as "Script_2" or "Script_3"
 
 //
 // Notes
 //
-string|Gradient Colour // in draw functions can be either a colour name, like "red", or a gradient recieved from gradient creation functions
+string|Gradient Colour // in draw functions can be either a colour name, like "red", a hex colour like "#FFFFFFF", or a gradient recieved from gradient creation functions
 AudioBufferSourceNode Source // in audio creation, AudioBufferSourceNode is an audio source which you can find more info on here: https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode</textarea>
 </div>
 </body>
