@@ -28,52 +28,8 @@ I highly recommend you read the engine code itself to understand the fully capab
 ## API Reference
 [See Here](https://ji8sw.github.io/WebEngine/API.html)
 
-## Example
-```javascript
-Game.Print("Welcome to WebEngine!"); // Prints to the browser console
-Game.DrawMode = DrawMode_Centered // rects will be drawn centered, as opposted to drawing from top left to bottom right, time saver
-
-let PlayerX = Game.Width / 2 // Width & Height are based on the web canvas
-let PlayerY = Game.Height / 2
-let PlayerMoveSpeed = 50
-let CursorRotation = 0
-
-let Photo = Game.LoadImage("https://ipfs.io/ipfs/QmZm1nZPpACjmf5MjUYAMXYsN9b6yAKzbvCv6WjDgJKLDp") // loads the image from the url, will only actually be drawn when its downloaded
-let TitleGradient = Game.CreateLinearGradient(0, 70, 70, 0,
-[
-    { offset: 0, color: "white" },
-    { offset: 1, color: "green" }
-]);
-
-Game.Update = function()
-{
-  	let PlayerXDelta = 0; // the change in this frame
-  	let PlayerYDelta = 0;
-  
-  	if (Game.IsKeyDown("W")) PlayerYDelta -= (PlayerMoveSpeed * Game.DeltaTime); // delta time to keep it consistent irrelative of framerate
-    if (Game.IsKeyDown("S")) PlayerYDelta += (PlayerMoveSpeed * Game.DeltaTime);
-  	if (Game.IsKeyDown("A")) PlayerXDelta -= (PlayerMoveSpeed * Game.DeltaTime);
-    if (Game.IsKeyDown("D")) PlayerXDelta += (PlayerMoveSpeed * Game.DeltaTime);
-  
-  	CursorRotation += 50 * Game.DeltaTime;
-  	
-  	Math.clamp(PlayerXDelta, -PlayerMoveSpeed, PlayerMoveSpeed); // so diagonal movement is not faster
-  	Math.clamp(PlayerYDelta, -PlayerMoveSpeed, PlayerMoveSpeed);
-  
-  	PlayerX += PlayerXDelta;
-  	PlayerY += PlayerYDelta;
-
-	Game.Clear();
-  
-    Game.DrawImage(Photo, Game.Width - 100, Game.Height - 100, 200, 200);
-  
-  	Game.DrawRect(Game.Mouse.X, Game.Mouse.Y, 10, 10, "white", CursorRotation); // follows the mouse cursor, no colour specified so it defaults to Game.DrawColour
-	Game.DrawCircle(PlayerX, PlayerY, 10, "white"); // draws a red circle, 10px radius at the player position
-  	Game.DrawText("WebEngine Example", Game.Width / 2, 24, TitleGradient); // pretty explanatory, draws text at the center top of the screen, default font size is 16 so we go down 16 and a bit
-  
-  	Game.DrawText("Copyright 2077", Game.Width / 2, Game.Height - 54, "purple", CursorRotation);
-}
-```
+## Examples
+See a list of example scripts [here](https://ji8sw.github.io/WebEngine/Examples/Examples.md)
 
 ## Security Note
 User code runs in the browser and has access to browser APIs. For public deployments, consider sandboxing or restricting available APIs.
